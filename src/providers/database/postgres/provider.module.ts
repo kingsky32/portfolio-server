@@ -9,7 +9,7 @@ import { PostgresConfigService } from '#config/database/postgres/config.service'
       imports: [PostgresConfigModule],
       useFactory: async (postgresConfigService: PostgresConfigService) => ({
         type: 'postgres' as DatabaseType,
-        entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+        entities: ['**/entities/*.entity{.ts,.js}'],
         host: postgresConfigService.host,
         port: postgresConfigService.port,
         username: postgresConfigService.username,
