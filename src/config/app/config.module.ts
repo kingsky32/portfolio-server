@@ -1,8 +1,9 @@
 import * as Joi from 'joi';
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import configuration from './config';
 import { AppConfigService } from './config.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { LoggerMiddleware } from '#common/middleware/logger.middleware';
 /**
  * Import and provide app configuration related classes.
  *
@@ -25,4 +26,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   providers: [ConfigService, AppConfigService],
   exports: [ConfigService, AppConfigService],
 })
-export class AppConfigModule {}
+export class AppConfigModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('/');
+  }
+}
