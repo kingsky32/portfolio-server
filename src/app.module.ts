@@ -5,6 +5,8 @@ import { AppController } from './app.controller';
 import { AppConfigModule } from '#config/app/config.module';
 import { FilesController } from '#/models/files/files.controller';
 import { FilesModule } from '#/models/files/files.module';
+import { CodesModule } from './models/codes/codes.module';
+import { CodesController } from './models/codes/codes.controller';
 
 /**
  * Import and provide app related classes.
@@ -12,8 +14,13 @@ import { FilesModule } from '#/models/files/files.module';
  * @module
  */
 @Module({
-  imports: [AppConfigModule, PostgreDatabaseProviderModule, FilesModule],
-  controllers: [AppController, FilesController],
+  imports: [
+    AppConfigModule,
+    PostgreDatabaseProviderModule,
+    FilesModule,
+    CodesModule,
+  ],
+  controllers: [AppController, FilesController, CodesController],
   providers: [AppService],
 })
 export class AppModule {}
