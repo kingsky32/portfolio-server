@@ -4,7 +4,7 @@ module.exports = {
   apps: [
     {
       name: 'seung-ju-server',
-      script: 'npm run start:prod',
+      script: './dist/main.js',
       watch: false,
       exec_mode: 'cluster',
     },
