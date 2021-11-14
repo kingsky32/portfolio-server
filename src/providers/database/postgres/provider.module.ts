@@ -20,4 +20,4 @@ import { PostgresConfigService } from '#config/database/postgres/config.service'
     } as TypeOrmModuleAsyncOptions),
   ],
 })
-export class MysqlDatabaseProviderModule {}
+export class PostgreDatabaseProviderModule {}
