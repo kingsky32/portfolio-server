@@ -9,7 +9,7 @@ export class Code implements ICode {
   @Column({ type: 'text' })
   label: string;
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: false })
   active: boolean;
 
   @CreateDateColumn({ name: 'created_at' })

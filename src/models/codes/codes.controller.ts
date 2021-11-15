@@ -21,6 +21,10 @@ export class CodesController {
         label: {
           type: 'string',
         },
+        active: {
+          type: 'boolean',
+          default: false,
+        },
       },
     },
   })
