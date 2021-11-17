@@ -10,8 +10,8 @@ export class ToolEntity extends ModelEntity implements ITool {
   label: string;
   active: boolean;
   icon: File;
-  @Expose({ groups: ['code.timestamps'] })
+  @Expose({ groups: ['tool.timestamps'] })
   createdAt: Date;
-  @Expose({ groups: ['code.timestamps'] })
+  @Expose({ groups: ['tool.timestamps'] })
   updatedAt: Date;
 }
