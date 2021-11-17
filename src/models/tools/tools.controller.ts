@@ -4,6 +4,7 @@ import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { ITool } from './interfaces/tools.interface';
 import { ToolEntity } from './serializers/tools.serializer';
 import { Tool } from './entities/tools.entity';
+import { UserTypes } from '#common/decorators/metadata/user-types.decorator';
 
 @ApiTags('tools')
 @Controller('tools')
@@ -31,6 +32,7 @@ export class ToolsController {
       },
     },
   })
+  @UserTypes('admin')
   async create(@Body() body: ITool): Promise<ToolEntity> {
     return this.toolsService.create(body);
   }
@@ -42,6 +44,7 @@ export class ToolsController {
 
   @Delete(':code')
   @ApiQuery({ name: 'code', type: 'string' })
+  @UserTypes('admin')
   async delete(@Query('code') code: string): Promise<boolean> {
     return this.toolsService.delete(code);
   }

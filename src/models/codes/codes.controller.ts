@@ -4,6 +4,7 @@ import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { ICode } from './interfaces/codes.interface';
 import { CodeEntity } from './serializers/codes.serializer';
 import { Code } from './entities/codes.entity';
+import { UserTypes } from '#common/decorators/metadata/user-types.decorator';
 
 @ApiTags('codes')
 @Controller('codes')
@@ -28,6 +29,7 @@ export class CodesController {
       },
     },
   })
+  @UserTypes('admin')
   async create(@Body() body: ICode): Promise<CodeEntity> {
     return this.codesService.create(body);
   }
@@ -39,6 +41,7 @@ export class CodesController {
 
   @Delete(':code')
   @ApiQuery({ name: 'code', type: 'string' })
+  @UserTypes('admin')
   async delete(@Query('code') code: string): Promise<boolean> {
     return this.codesService.delete(code);
   }
