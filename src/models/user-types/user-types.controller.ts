@@ -16,7 +16,7 @@ export class UserTypesController {
     schema: {
       type: 'object',
       properties: {
-        type: {
+        userType: {
           type: 'string',
         },
         label: {
