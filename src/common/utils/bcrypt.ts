@@ -1,8 +1,6 @@
 import * as bcryptjs from 'bcryptjs';
 
-export type GenerateType = string | Error;
-
-export const generate = (password: string): Promise<GenerateType> => {
+export const generate = (password: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     bcryptjs.genSalt(10, (_, salt) => {
       bcryptjs.hash(password, salt, (err, hash) => {
@@ -15,9 +13,7 @@ export const generate = (password: string): Promise<GenerateType> => {
   });
 };
 
-export type CompareType = boolean | Error;
-
-export const compare = (password, hashPassword): Promise<CompareType> => {
+export const compare = (password, hashPassword): Promise<boolean> => {
   return new Promise((resolve, reject) => {
     bcryptjs.compare(password, hashPassword, (err, success) => {
       if (err) {

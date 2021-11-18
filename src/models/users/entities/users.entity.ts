@@ -25,7 +25,7 @@ export class User implements IUser {
   @Column({ type: 'text' })
   password: string;
 
-  @Column({ name: 'account_access_fail_count', type: 'numeric' })
+  @Column({ name: 'account_access_fail_count', type: 'numeric', default: 0 })
   accountAccessFailCount: number;
 
   @ManyToOne(() => File, (file) => file.id)
