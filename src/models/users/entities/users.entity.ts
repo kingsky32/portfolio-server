@@ -16,10 +16,10 @@ export class User implements IUser {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', unique: true })
   email: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', unique: true })
   username: string;
 
   @Column({ type: 'text' })

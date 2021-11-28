@@ -1,4 +1,4 @@
-import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CodesService } from './codes.service';
 import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { ICode } from './interfaces/codes.interface';
@@ -11,6 +11,7 @@ import { UserTypes } from '#common/decorators/metadata/user-types.decorator';
 export class CodesController {
   constructor(private readonly codesService: CodesService) {}
 
+  @ApiBearerAuth()
   @Post()
   @ApiBody({
     schema: {
@@ -39,6 +40,7 @@ export class CodesController {
     return this.codesService.findAll();
   }
 
+  @ApiBearerAuth()
   @Delete(':code')
   @ApiQuery({ name: 'code', type: 'string' })
   @UserTypes('admin')

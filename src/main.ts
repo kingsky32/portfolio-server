@@ -7,11 +7,12 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import '#common/utils/env';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  const config = new DocumentBuilder()
+  const options = new DocumentBuilder()
     .setTitle('Seung Ju Server')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
   // Get app config for cors settings and starting the app.
   const appConfig = app.get<AppConfigService>(AppConfigService);

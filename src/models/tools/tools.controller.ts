@@ -1,4 +1,4 @@
-import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { ToolsService } from './tools.service';
 import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { ITool } from './interfaces/tools.interface';
@@ -11,6 +11,7 @@ import { UserTypes } from '#common/decorators/metadata/user-types.decorator';
 export class ToolsController {
   constructor(private readonly toolsService: ToolsService) {}
 
+  @ApiBearerAuth()
   @Post()
   @ApiBody({
     schema: {
@@ -42,6 +43,7 @@ export class ToolsController {
     return this.toolsService.findAll();
   }
 
+  @ApiBearerAuth()
   @Delete(':code')
   @ApiQuery({ name: 'code', type: 'string' })
   @UserTypes('admin')

@@ -1,5 +1,5 @@
 import { UserTypes } from './../../common/decorators/metadata/user-types.decorator';
-import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { UserTypesService } from './user-types.service';
 import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { IUserType } from './interfaces/user-types.interface';
@@ -11,6 +11,7 @@ import { UserType } from './entities/user-types.entity';
 export class UserTypesController {
   constructor(private readonly userTypesService: UserTypesService) {}
 
+  @ApiBearerAuth()
   @Post()
   @ApiBody({
     schema: {
@@ -39,6 +40,7 @@ export class UserTypesController {
     return this.userTypesService.findAll();
   }
 
+  @ApiBearerAuth()
   @Delete(':type')
   @ApiQuery({ name: 'type', type: 'string' })
   @UserTypes('admin')

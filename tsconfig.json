@@ -12,6 +12,7 @@
     "baseUrl": "./src/",
     "paths": {
       "#/*": ["*"],
+      "#authentication/*": ["authentication/*"],
       "#common/*": ["common/*"],
       "#config/*": ["config/*"],
       "#models/*": ["models/*"],
