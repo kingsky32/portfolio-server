@@ -16,8 +16,8 @@ export class UserTypesService {
     return await this.userTypesRepository.createEntity(body);
   }
 
-  async findAll(): Promise<UserType[]> {
-    return await this.userTypesRepository.find();
+  async getAll(): Promise<UserType[]> {
+    return await this.userTypesRepository.getAll();
   }
 
   async delete(userType: string): Promise<boolean> {

@@ -1,13 +1,29 @@
-import { UserTypes } from './../../common/decorators/metadata/user-types.decorator';
+import { UserTypes } from '#common/decorators/metadata/user-types.decorator';
 import { ApiBody, ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { UserTypesService } from './user-types.service';
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Query,
+  SerializeOptions,
+  UseInterceptors,
+} from '@nestjs/common';
 import { IUserType } from './interfaces/user-types.interface';
-import { UserTypeEntity } from './serializers/user-types.serializer';
+import {
+  defaultUserTyperoupsForSerializing,
+  UserTypeEntity,
+} from './serializers/user-types.serializer';
 import { UserType } from './entities/user-types.entity';
 
 @ApiTags('user-types')
 @Controller('user-types')
+@SerializeOptions({
+  groups: defaultUserTyperoupsForSerializing,
+})
 export class UserTypesController {
   constructor(private readonly userTypesService: UserTypesService) {}
 
@@ -36,8 +52,9 @@ export class UserTypesController {
   }
 
   @Get()
-  async findAll(): Promise<UserType[]> {
-    return this.userTypesService.findAll();
+  @UseInterceptors(ClassSerializerInterceptor)
+  async getAll(): Promise<UserType[]> {
+    return this.userTypesService.getAll();
   }
 
   @ApiBearerAuth()

@@ -1,13 +1,29 @@
 import { ApiBody, ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { ToolsService } from './tools.service';
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Query,
+  SerializeOptions,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ITool } from './interfaces/tools.interface';
-import { ToolEntity } from './serializers/tools.serializer';
+import {
+  defaultToolGroupsForSerializing,
+  ToolEntity,
+} from './serializers/tools.serializer';
 import { Tool } from './entities/tools.entity';
 import { UserTypes } from '#common/decorators/metadata/user-types.decorator';
 
 @ApiTags('tools')
 @Controller('tools')
+@SerializeOptions({
+  groups: defaultToolGroupsForSerializing,
+})
 export class ToolsController {
   constructor(private readonly toolsService: ToolsService) {}
 
@@ -38,9 +54,10 @@ export class ToolsController {
     return this.toolsService.create(body);
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
-  async findAll(): Promise<Tool[]> {
-    return this.toolsService.findAll();
+  async getAll(): Promise<Tool[]> {
+    return this.toolsService.getAll();
   }
 
   @ApiBearerAuth()

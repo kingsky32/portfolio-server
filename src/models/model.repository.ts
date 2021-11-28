@@ -24,6 +24,23 @@ export class ModelRepository<T, K extends ModelEntity> extends Repository<T> {
       .catch((error) => Promise.reject(error));
   }
 
+  async getAll(
+    relations: string[] = [],
+    throwsException = false,
+  ): Promise<K[] | null> {
+    return await this.find({
+      relations,
+    })
+      .then((entities) => {
+        if (!entities && throwsException) {
+          return Promise.reject(new NotFoundException('Model not found.'));
+        }
+
+        return Promise.resolve(entities ? this.transformMany(entities) : null);
+      })
+      .catch((error) => Promise.reject(error));
+  }
+
   async createEntity(
     inputs: DeepPartial<T>,
     relations: string[] = [],

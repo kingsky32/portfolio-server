@@ -3,7 +3,7 @@ import { ITool } from '../interfaces/tools.interface';
 import { ModelEntity } from '#common/serializers/model.serializer';
 import { File } from '#models/files/entities/files.entity';
 
-export const defaultToolGroupsForSerializing: string[] = ['tool.timestamps'];
+export const defaultToolGroupsForSerializing: string[] = [];
 
 export class ToolEntity extends ModelEntity implements ITool {
   code: string;
