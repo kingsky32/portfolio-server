@@ -1,3 +1,5 @@
+import { LogsController } from './models/logs/logs.controller';
+import { LogsModule } from './models/logs/logs.module';
 import { APP_GUARD } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
@@ -33,6 +35,7 @@ import { UserTypesGuard } from './common/guards/user-types.guard';
     AuthModule,
     UserTypesModule,
     UsersModule,
+    LogsModule,
   ],
   controllers: [
     AppController,
@@ -42,6 +45,7 @@ import { UserTypesGuard } from './common/guards/user-types.guard';
     AuthController,
     UserTypesController,
     UsersController,
+    LogsController,
   ],
   providers: [
     AppService,

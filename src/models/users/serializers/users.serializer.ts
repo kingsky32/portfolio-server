@@ -27,6 +27,8 @@ export class UserEntity extends ModelEntity implements IUser {
 
   userType: UserType;
 
+  isActive: boolean;
+
   @Expose({ groups: ['user.account_access_fail_count'] })
   accountAccessFailCount: number;
 

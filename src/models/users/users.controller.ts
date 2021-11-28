@@ -33,6 +33,7 @@ export class UsersController {
         username: { type: 'string' },
         password: { type: 'string' },
         profile: { type: 'string' },
+        isActive: { type: 'boolean' },
       },
     },
   })

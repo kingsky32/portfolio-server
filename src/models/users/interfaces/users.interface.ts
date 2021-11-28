@@ -8,4 +8,5 @@ export interface IUser {
   profile: File;
   accountAccessFailCount: number;
   userType: UserType;
+  isActive: boolean;
 }
