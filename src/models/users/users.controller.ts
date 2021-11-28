@@ -5,16 +5,20 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Query,
+  Req,
   SerializeOptions,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBody, ApiTags, ApiQuery } from '@nestjs/swagger';
+import { ApiBody, ApiTags, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { User } from './entities/users.entity';
 import {
   extendedUserGroupsForSerializing,
   UserEntity,
 } from './serializers/users.serializer';
+import { JwtAuthGuard } from '#/common/guards/jwt-auth.guard';
 
 @ApiTags('users')
 @Controller('users')

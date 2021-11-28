@@ -10,6 +10,18 @@ export type UserFindOneRequestBody =
   | Pick<User, 'id'>
   | (Partial<Pick<User, 'id' | 'email' | 'username'>> & FindOneOptions<User>);
 
+export type UserUpdateRequestBody = Omit<
+  User,
+  | 'id'
+  | 'email'
+  | 'username'
+  | 'password'
+  | 'accountAccessFailCount'
+  | 'userType'
+  | 'createdAt'
+  | 'updatedAt'
+>;
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -41,6 +53,22 @@ export class UsersService {
     const bcryptPassword = await bcrypt.generate(body.password);
     body.password = bcryptPassword;
 
-    return await this.usersRepository.createEntity(body, ['profile']);
+    return await this.usersRepository.createEntity(body, [
+      'profile',
+      'userType',
+    ]);
+  }
+
+  async update(id: string, body: UserUpdateRequestBody): Promise<User | null> {
+    const user = await this.get(id, [], true);
+
+    if (!Boolean(user)) {
+      throw new HttpException('Unregistered User', HttpStatus.UNAUTHORIZED);
+    }
+
+    return await this.usersRepository.updateEntity(user, body, [
+      'profile',
+      'userType',
+    ]);
   }
 }
