@@ -19,13 +19,18 @@ export class User implements IUser {
   @Column({ type: 'text', unique: true })
   email: string;
 
-  @Column({ type: 'text', unique: true })
+  @Column({ type: 'text', unique: true, nullable: false })
   username: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: false })
   password: string;
 
-  @Column({ name: 'account_access_fail_count', type: 'numeric', default: 0 })
+  @Column({
+    name: 'account_access_fail_count',
+    type: 'numeric',
+    default: 0,
+    nullable: false,
+  })
   accountAccessFailCount: number;
 
   @ManyToOne(() => File, (file) => file.id)

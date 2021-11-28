@@ -21,7 +21,7 @@ export class Tool implements ITool {
   @JoinColumn({ name: 'icon', referencedColumnName: 'id' })
   icon: File;
 
-  @Column({ type: 'boolean', default: false })
+  @Column({ type: 'boolean', default: false, nullable: false })
   active: boolean;
 
   @CreateDateColumn({ name: 'created_at' })
