@@ -21,26 +21,7 @@ export class AuthService {
     username: string,
     password: string,
   ): Promise<ValidateUserType> {
-    try {
-      const user = await this.usersService.findOne({ username });
-
-      if (!Boolean(user)) {
-        throw new HttpException('Unregistered User', HttpStatus.UNAUTHORIZED);
-      }
-
-      const isCompare = await bcrypt.compare(password, user.password);
-
-      if (isCompare === false) {
-        throw new HttpException('Incorrect Password', HttpStatus.UNAUTHORIZED);
-      }
-
-      return user;
-    } catch (error) {
-      throw new HttpException(
-        'Wrong credentials provided',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+    return await this.usersService.login(username, password);
   }
 
   async login(user: User) {

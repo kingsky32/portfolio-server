@@ -71,4 +71,33 @@ export class UsersService {
       'userType',
     ]);
   }
+
+  async login(username: string, password: string): Promise<User | null> {
+    try {
+      const user = await this.findOne({ username });
+
+      if (!Boolean(user)) {
+        throw new HttpException('Unregistered User', HttpStatus.UNAUTHORIZED);
+      }
+
+      const isCompare = await bcrypt.compare(password, user.password);
+
+      if (isCompare === false) {
+        await this.usersRepository.update(user.id, {
+          accountAccessFailCount: Number(user.accountAccessFailCount) + 1,
+        });
+        throw new HttpException('Incorrect Password', HttpStatus.UNAUTHORIZED);
+      }
+
+      await this.usersRepository.update(user.id, {
+        accountAccessFailCount: 0,
+      });
+      return user;
+    } catch (error) {
+      throw new HttpException(
+        'Wrong credentials provided',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
 }
