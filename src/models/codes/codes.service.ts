@@ -2,8 +2,6 @@ import { CodesRepository } from './codes.repository';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CodeEntity } from './serializers/codes.serializer';
-import { ICode } from './interfaces/codes.interface';
-import { Code } from './entities/codes.entity';
 
 @Injectable()
 export class CodesService {
@@ -12,12 +10,12 @@ export class CodesService {
     private readonly codesRepository: CodesRepository,
   ) {}
 
-  async create(body: ICode): Promise<CodeEntity> {
-    return await this.codesRepository.createEntity(body);
+  async create(codeEntity: CodeEntity): Promise<CodeEntity> {
+    return await this.codesRepository.createEntity(codeEntity);
   }
 
-  async findAll(): Promise<Code[]> {
-    return await this.codesRepository.find();
+  async getAll(): Promise<CodeEntity[]> {
+    return await this.codesRepository.getAll();
   }
 
   async delete(code: string): Promise<boolean> {

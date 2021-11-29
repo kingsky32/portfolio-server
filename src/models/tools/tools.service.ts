@@ -2,8 +2,6 @@ import { ToolsRepository } from './tools.repository';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ToolEntity } from './serializers/tools.serializer';
-import { ITool } from './interfaces/tools.interface';
-import { Tool } from './entities/tools.entity';
 
 @Injectable()
 export class ToolsService {
@@ -12,11 +10,11 @@ export class ToolsService {
     private readonly toolsRepository: ToolsRepository,
   ) {}
 
-  async create(body: ITool): Promise<ToolEntity> {
-    return await this.toolsRepository.createEntity(body, ['icon']);
+  async create(toolEntity: ToolEntity): Promise<ToolEntity | null> {
+    return await this.toolsRepository.createEntity(toolEntity, ['icon']);
   }
 
-  async getAll(): Promise<Tool[]> {
+  async getAll(): Promise<ToolEntity[]> {
     return await this.toolsRepository.getAll(['icon']);
   }
 

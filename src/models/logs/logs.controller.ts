@@ -1,4 +1,4 @@
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
 import { LogsService } from './logs.service';
 import {
   ClassSerializerInterceptor,
@@ -7,8 +7,10 @@ import {
   SerializeOptions,
   UseInterceptors,
 } from '@nestjs/common';
-import { defaultLogGroupsForSerializing } from './serializers/logs.serializer';
-import { Log } from './entities/logs.entity';
+import {
+  defaultLogGroupsForSerializing,
+  LogEntity,
+} from './serializers/logs.serializer';
 import { UserTypes } from '#common/decorators/metadata/user-types.decorator';
 
 @ApiTags('logs')
@@ -22,7 +24,8 @@ export class LogsController {
   @UseInterceptors(ClassSerializerInterceptor)
   @Get()
   @UserTypes('admin')
-  async getAll(): Promise<Log[]> {
+  @ApiOkResponse({ type: [LogEntity] })
+  async getAll(): Promise<LogEntity[]> {
     return this.toolsService.getAll();
   }
 }

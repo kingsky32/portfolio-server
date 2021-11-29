@@ -1,4 +1,10 @@
-import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CodesService } from './codes.service';
 import {
   Body,
@@ -11,12 +17,10 @@ import {
   SerializeOptions,
   UseInterceptors,
 } from '@nestjs/common';
-import { ICode } from './interfaces/codes.interface';
 import {
   CodeEntity,
   defaultCodeGroupsForSerializing,
 } from './serializers/codes.serializer';
-import { Code } from './entities/codes.entity';
 import { UserTypes } from '#common/decorators/metadata/user-types.decorator';
 
 @ApiTags('codes')
@@ -29,38 +33,27 @@ export class CodesController {
 
   @ApiBearerAuth()
   @Post()
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        code: {
-          type: 'string',
-        },
-        label: {
-          type: 'string',
-        },
-        isActive: {
-          type: 'boolean',
-          default: false,
-        },
-      },
-    },
-  })
   @UserTypes('admin')
-  async create(@Body() body: ICode): Promise<CodeEntity> {
-    return this.codesService.create(body);
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    type: CodeEntity,
+  })
+  async create(@Body() codeEntity: CodeEntity): Promise<CodeEntity> {
+    return this.codesService.create(codeEntity);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Get()
-  async findAll(): Promise<Code[]> {
-    return this.codesService.findAll();
+  @ApiOkResponse({ type: [CodeEntity] })
+  async getAll(): Promise<CodeEntity[]> {
+    return this.codesService.getAll();
   }
 
   @ApiBearerAuth()
   @Delete(':code')
   @ApiQuery({ name: 'code', type: 'string' })
   @UserTypes('admin')
+  @ApiOkResponse({ type: Boolean })
   async delete(@Query('code') code: string): Promise<boolean> {
     return this.codesService.delete(code);
   }

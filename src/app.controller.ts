@@ -52,6 +52,7 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Put('profile')
   @UseInterceptors(ClassSerializerInterceptor)
+  @ApiOkResponse({ type: UserEntity })
   async update(
     @Req() req,
     @Body() updateUserDto: UpdateUserDto,

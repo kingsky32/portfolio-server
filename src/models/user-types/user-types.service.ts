@@ -2,8 +2,6 @@ import { UserTypesRepository } from './user-types.repository';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserTypeEntity } from './serializers/user-types.serializer';
-import { IUserType } from './interfaces/user-types.interface';
-import { UserType } from './entities/user-types.entity';
 
 @Injectable()
 export class UserTypesService {
@@ -12,11 +10,11 @@ export class UserTypesService {
     private readonly userTypesRepository: UserTypesRepository,
   ) {}
 
-  async create(body: IUserType): Promise<UserTypeEntity> {
-    return await this.userTypesRepository.createEntity(body);
+  async create(userTypeEntity: UserTypeEntity): Promise<UserTypeEntity | null> {
+    return await this.userTypesRepository.createEntity(userTypeEntity);
   }
 
-  async getAll(): Promise<UserType[]> {
+  async getAll(): Promise<UserTypeEntity[]> {
     return await this.userTypesRepository.getAll();
   }
 
