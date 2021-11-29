@@ -1,5 +1,4 @@
 import { UpdateUserDto } from './models/users/dtos/users.dto';
-import { User } from '#models/users/entities/users.entity';
 import { UsersService } from '#models/users/users.service';
 import {
   Body,
