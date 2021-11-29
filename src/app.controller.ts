@@ -1,3 +1,4 @@
+import { UpdateUserDto } from './models/users/dtos/users.dto';
 import { User } from '#models/users/entities/users.entity';
 import { UsersService } from '#models/users/users.service';
 import {
@@ -11,10 +12,13 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
 import { AppService } from './app.service';
 import { JwtAuthGuard } from '#common/guards/jwt-auth.guard';
-import { extendedUserGroupsForSerializing } from './models/users/serializers/users.serializer';
+import {
+  extendedUserGroupsForSerializing,
+  UserEntity,
+} from './models/users/serializers/users.serializer';
 
 @Controller()
 @SerializeOptions({
@@ -35,7 +39,8 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   @UseInterceptors(ClassSerializerInterceptor)
-  getProfile(@Req() req): Promise<User | null> {
+  @ApiOkResponse({ type: UserEntity })
+  getProfile(@Req() req): Promise<UserEntity | null> {
     const user = this.usersService.get(
       req.user.id,
       ['profile', 'userType'],
@@ -48,15 +53,10 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Put('profile')
   @UseInterceptors(ClassSerializerInterceptor)
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        profile: { type: 'string' },
-      },
-    },
-  })
-  async update(@Req() req, @Body() body): Promise<User | null> {
-    return this.usersService.update(req.user.id, body);
+  async update(
+    @Req() req,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<UserEntity | null> {
+    return this.usersService.update(req.user.id, updateUserDto);
   }
 }

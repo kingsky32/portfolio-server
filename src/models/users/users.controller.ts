@@ -9,12 +9,17 @@ import {
   SerializeOptions,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBody, ApiTags, ApiQuery } from '@nestjs/swagger';
-import { User } from './entities/users.entity';
+import {
+  ApiTags,
+  ApiQuery,
+  ApiCreatedResponse,
+  ApiOkResponse,
+} from '@nestjs/swagger';
 import {
   extendedUserGroupsForSerializing,
   UserEntity,
 } from './serializers/users.serializer';
+import { CreateUserDto } from './dtos/users.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -25,25 +30,18 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Post('/')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        email: { type: 'string' },
-        username: { type: 'string' },
-        password: { type: 'string' },
-        profile: { type: 'string' },
-        isActive: { type: 'boolean' },
-      },
-    },
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    type: UserEntity,
   })
-  async create(@Body() body: User) {
-    return this.usersService.create(body);
+  async create(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
+    return this.usersService.create(createUserDto);
   }
 
   @Get('/:id')
   @UseInterceptors(ClassSerializerInterceptor)
   @ApiQuery({ name: 'id', type: 'string' })
+  @ApiOkResponse({ type: UserEntity })
   async get(@Query('id') id: string): Promise<UserEntity> {
     return this.usersService.get(id, ['profile', 'userType'], true);
   }

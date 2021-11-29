@@ -5,6 +5,7 @@ import { UsersRepository } from './users.repository';
 import { User } from './entities/users.entity';
 import bcrypt from '#common/utils/bcrypt';
 import { FindOneOptions } from 'typeorm';
+import { CreateUserDto, UpdateUserDto } from './dtos/users.dto';
 
 export type UserFindOneRequestBody =
   | Pick<User, 'id'>
@@ -41,32 +42,35 @@ export class UsersService {
     return await this.usersRepository.findOne(body);
   }
 
-  async create(body: User): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     const user = await this.findOne({
-      where: [{ email: body.email }, { username: body.username }],
+      where: [
+        { email: createUserDto.email },
+        { username: createUserDto.username },
+      ],
     });
 
     if (Boolean(user)) {
       throw new HttpException('account already exists.', HttpStatus.FORBIDDEN);
     }
 
-    const bcryptPassword = await bcrypt.generate(body.password);
-    body.password = bcryptPassword;
+    const bcryptPassword = await bcrypt.generate(createUserDto.password);
+    createUserDto.password = bcryptPassword;
 
-    return await this.usersRepository.createEntity(body, [
+    return await this.usersRepository.createEntity(createUserDto, [
       'profile',
       'userType',
     ]);
   }
 
-  async update(id: string, body: UserUpdateRequestBody): Promise<User | null> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User | null> {
     const user = await this.get(id, [], true);
 
     if (!Boolean(user)) {
       throw new HttpException('Unregistered User', HttpStatus.UNAUTHORIZED);
     }
 
-    return await this.usersRepository.updateEntity(user, body, [
+    return await this.usersRepository.updateEntity(user, updateUserDto, [
       'profile',
       'userType',
     ]);
