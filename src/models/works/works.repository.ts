@@ -1,23 +1,23 @@
 import { NotFoundException } from '@nestjs/common';
 import { EntityRepository, DeepPartial } from 'typeorm';
-import { Tool } from './entities/tools.entity';
+import { Work } from './entities/works.entity';
 import { ModelRepository } from '../model.repository';
 import {
-  defaultToolGroupsForSerializing,
-  ToolEntity,
-} from './serializers/tools.serializer';
+  defaultWorkGroupsForSerializing,
+  WorkEntity,
+} from './serializers/works.serializer';
 import { classToPlain, plainToClass } from 'class-transformer';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
-@EntityRepository(Tool)
-export class ToolsRepository extends ModelRepository<Tool, ToolEntity> {
+@EntityRepository(Work)
+export class WorksRepository extends ModelRepository<Work, WorkEntity> {
   async get(
-    tool: string,
+    id: string,
     relations: string[] = [],
     throwsException = false,
-  ): Promise<ToolEntity | null> {
+  ): Promise<WorkEntity | null> {
     return await this.findOne({
-      where: { tool },
+      where: { id },
       relations,
     })
       .then((entity) => {
@@ -31,35 +31,35 @@ export class ToolsRepository extends ModelRepository<Tool, ToolEntity> {
   }
 
   async createEntity(
-    inputs: DeepPartial<Tool>,
+    inputs: DeepPartial<Work>,
     relations: string[] = [],
-  ): Promise<ToolEntity> {
+  ): Promise<WorkEntity> {
     return this.save(inputs)
-      .then(async (entity) => await this.get((entity as any).tool, relations))
+      .then(async (entity) => await this.get((entity as any).id, relations))
       .catch((error) => Promise.reject(error));
   }
 
   async updateEntity(
-    entity: ToolEntity,
-    inputs: QueryDeepPartialEntity<Tool>,
+    entity: WorkEntity,
+    inputs: QueryDeepPartialEntity<Work>,
     relations: string[] = [],
-  ): Promise<ToolEntity> {
-    return this.update(entity.tool, inputs)
-      .then(async () => await this.get(entity.tool, relations))
+  ): Promise<WorkEntity> {
+    return this.update(entity.id, inputs)
+      .then(async () => await this.get(entity.id, relations))
       .catch((error) => Promise.reject(error));
   }
 
-  transform(model: Tool): ToolEntity {
+  transform(model: Work): WorkEntity {
     const tranformOptions = {
-      groups: defaultToolGroupsForSerializing,
+      groups: defaultWorkGroupsForSerializing,
     };
     return plainToClass(
-      ToolEntity,
+      WorkEntity,
       classToPlain(model, tranformOptions),
       tranformOptions,
     );
   }
-  transformMany(models: Tool[]): ToolEntity[] {
+  transformMany(models: Work[]): WorkEntity[] {
     return models.map((model) => this.transform(model));
   }
 }

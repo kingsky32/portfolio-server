@@ -39,7 +39,7 @@ export class UserTypesController {
         label: {
           type: 'string',
         },
-        active: {
+        isActive: {
           type: 'boolean',
           default: false,
         },

@@ -20,8 +20,8 @@ export class ToolsService {
     return await this.toolsRepository.getAll(['icon']);
   }
 
-  async delete(code: string): Promise<boolean> {
-    const { affected } = await this.toolsRepository.delete({ code });
+  async delete(tool: string): Promise<boolean> {
+    const { affected } = await this.toolsRepository.delete({ tool });
     if (affected < 1) {
       throw new ConflictException();
     }

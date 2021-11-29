@@ -33,7 +33,7 @@ export class ToolsController {
     schema: {
       type: 'object',
       properties: {
-        code: {
+        tool: {
           type: 'string',
         },
         label: {
@@ -42,7 +42,7 @@ export class ToolsController {
         icon: {
           type: 'string',
         },
-        active: {
+        isActive: {
           type: 'boolean',
           default: false,
         },
@@ -61,10 +61,10 @@ export class ToolsController {
   }
 
   @ApiBearerAuth()
-  @Delete(':code')
-  @ApiQuery({ name: 'code', type: 'string' })
+  @Delete(':tool')
+  @ApiQuery({ name: 'tool', type: 'string' })
   @UserTypes('admin')
-  async delete(@Query('code') code: string): Promise<boolean> {
-    return this.toolsService.delete(code);
+  async delete(@Query('tool') tool: string): Promise<boolean> {
+    return this.toolsService.delete(tool);
   }
 }

@@ -1,11 +1,11 @@
 import { Expose } from 'class-transformer';
-import { ICode } from '../interfaces/codes.interface';
+import { IPlatform } from '../interfaces/platforms.interface';
 import { ModelEntity } from '#common/serializers/model.serializer';
 
-export const defaultCodeGroupsForSerializing: string[] = [];
+export const defaultPlatformGroupsForSerializing: string[] = [];
 
-export class CodeEntity extends ModelEntity implements ICode {
-  code: string;
+export class PlatformEntity extends ModelEntity implements IPlatform {
+  platform: string;
   label: string;
   isActive: boolean;
   @Expose({ groups: ['code.timestamps'] })

@@ -1,23 +1,26 @@
 import { NotFoundException } from '@nestjs/common';
 import { EntityRepository, DeepPartial } from 'typeorm';
-import { Tool } from './entities/tools.entity';
+import { Platform } from './entities/platforms.entity';
 import { ModelRepository } from '../model.repository';
 import {
-  defaultToolGroupsForSerializing,
-  ToolEntity,
-} from './serializers/tools.serializer';
+  defaultPlatformGroupsForSerializing,
+  PlatformEntity,
+} from './serializers/platforms.serializer';
 import { classToPlain, plainToClass } from 'class-transformer';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
-@EntityRepository(Tool)
-export class ToolsRepository extends ModelRepository<Tool, ToolEntity> {
+@EntityRepository(Platform)
+export class PlatformsRepository extends ModelRepository<
+  Platform,
+  PlatformEntity
+> {
   async get(
-    tool: string,
+    platform: string,
     relations: string[] = [],
     throwsException = false,
-  ): Promise<ToolEntity | null> {
+  ): Promise<PlatformEntity | null> {
     return await this.findOne({
-      where: { tool },
+      where: { platform },
       relations,
     })
       .then((entity) => {
@@ -31,35 +34,37 @@ export class ToolsRepository extends ModelRepository<Tool, ToolEntity> {
   }
 
   async createEntity(
-    inputs: DeepPartial<Tool>,
+    inputs: DeepPartial<Platform>,
     relations: string[] = [],
-  ): Promise<ToolEntity> {
+  ): Promise<PlatformEntity> {
     return this.save(inputs)
-      .then(async (entity) => await this.get((entity as any).tool, relations))
+      .then(
+        async (entity) => await this.get((entity as any).platform, relations),
+      )
       .catch((error) => Promise.reject(error));
   }
 
   async updateEntity(
-    entity: ToolEntity,
-    inputs: QueryDeepPartialEntity<Tool>,
+    entity: PlatformEntity,
+    inputs: QueryDeepPartialEntity<Platform>,
     relations: string[] = [],
-  ): Promise<ToolEntity> {
-    return this.update(entity.tool, inputs)
-      .then(async () => await this.get(entity.tool, relations))
+  ): Promise<PlatformEntity> {
+    return this.update(entity.platform, inputs)
+      .then(async () => await this.get(entity.platform, relations))
       .catch((error) => Promise.reject(error));
   }
 
-  transform(model: Tool): ToolEntity {
+  transform(model: Platform): PlatformEntity {
     const tranformOptions = {
-      groups: defaultToolGroupsForSerializing,
+      groups: defaultPlatformGroupsForSerializing,
     };
     return plainToClass(
-      ToolEntity,
+      PlatformEntity,
       classToPlain(model, tranformOptions),
       tranformOptions,
     );
   }
-  transformMany(models: Tool[]): ToolEntity[] {
+  transformMany(models: Platform[]): PlatformEntity[] {
     return models.map((model) => this.transform(model));
   }
 }

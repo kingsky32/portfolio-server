@@ -12,7 +12,7 @@ import { ITool } from '../interfaces/tools.interface';
 @Entity({ name: 'tools' })
 export class Tool implements ITool {
   @Column({ type: 'text', primary: true })
-  code: string;
+  tool: string;
 
   @Column({ type: 'text' })
   label: string;
@@ -22,7 +22,7 @@ export class Tool implements ITool {
   icon: File;
 
   @Column({ type: 'boolean', default: false, nullable: false })
-  active: boolean;
+  isActive: boolean;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

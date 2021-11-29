@@ -6,9 +6,9 @@ import { File } from '#models/files/entities/files.entity';
 export const defaultToolGroupsForSerializing: string[] = [];
 
 export class ToolEntity extends ModelEntity implements ITool {
-  code: string;
+  tool: string;
   label: string;
-  active: boolean;
+  isActive: boolean;
   icon: File;
   @Expose({ groups: ['tool.timestamps'] })
   createdAt: Date;

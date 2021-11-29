@@ -7,7 +7,7 @@ export const defaultUserTyperoupsForSerializing: string[] = [];
 export class UserTypeEntity extends ModelEntity implements IUserType {
   userType: string;
   label: string;
-  active: boolean;
+  isActive: boolean;
   @Expose({ groups: ['user_type.timestamps'] })
   createdAt: Date;
   @Expose({ groups: ['user_type.timestamps'] })

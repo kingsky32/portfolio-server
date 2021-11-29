@@ -1,10 +1,10 @@
 import { Column, CreateDateColumn, Entity, UpdateDateColumn } from 'typeorm';
-import { IUserType } from '../interfaces/user-types.interface';
+import { IPlatform } from '../interfaces/platforms.interface';
 
-@Entity({ name: 'user_types' })
-export class UserType implements IUserType {
-  @Column({ name: 'user_type', type: 'text', primary: true })
-  userType: string;
+@Entity({ name: 'codes' })
+export class Platform implements IPlatform {
+  @Column({ type: 'text', primary: true })
+  platform: string;
 
   @Column({ type: 'text' })
   label: string;

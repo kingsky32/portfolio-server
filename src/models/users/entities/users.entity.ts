@@ -41,7 +41,7 @@ export class User implements IUser {
   @JoinColumn({ name: 'user_type', referencedColumnName: 'userType' })
   userType: UserType;
 
-  @Column({ name: 'is_active', default: false, nullable: false })
+  @Column({ name: 'is_isActive', default: false, nullable: false })
   isActive: boolean;
 
   @CreateDateColumn({ name: 'created_at' })

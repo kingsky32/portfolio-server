@@ -1,5 +1,5 @@
 import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { CodesService } from './codes.service';
+import { PlatformssService } from './platforms.service';
 import {
   Body,
   ClassSerializerInterceptor,
@@ -11,21 +11,21 @@ import {
   SerializeOptions,
   UseInterceptors,
 } from '@nestjs/common';
-import { ICode } from './interfaces/codes.interface';
+import { IPlatform } from './interfaces/platforms.interface';
 import {
-  CodeEntity,
-  defaultCodeGroupsForSerializing,
-} from './serializers/codes.serializer';
-import { Code } from './entities/codes.entity';
+  PlatformEntity,
+  defaultPlatformGroupsForSerializing,
+} from './serializers/platforms.serializer';
+import { Platform } from './entities/platforms.entity';
 import { UserTypes } from '#common/decorators/metadata/user-types.decorator';
 
-@ApiTags('codes')
-@Controller('codes')
+@ApiTags('platforms')
+@Controller('platforms')
 @SerializeOptions({
-  groups: defaultCodeGroupsForSerializing,
+  groups: defaultPlatformGroupsForSerializing,
 })
 export class CodesController {
-  constructor(private readonly codesService: CodesService) {}
+  constructor(private readonly platformsService: PlatformssService) {}
 
   @ApiBearerAuth()
   @Post()
@@ -47,14 +47,14 @@ export class CodesController {
     },
   })
   @UserTypes('admin')
-  async create(@Body() body: ICode): Promise<CodeEntity> {
-    return this.codesService.create(body);
+  async create(@Body() body: IPlatform): Promise<PlatformEntity> {
+    return this.platformsService.create(body);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Get()
-  async findAll(): Promise<Code[]> {
-    return this.codesService.findAll();
+  async findAll(): Promise<Platform[]> {
+    return this.platformsService.findAll();
   }
 
   @ApiBearerAuth()
@@ -62,6 +62,6 @@ export class CodesController {
   @ApiQuery({ name: 'code', type: 'string' })
   @UserTypes('admin')
   async delete(@Query('code') code: string): Promise<boolean> {
-    return this.codesService.delete(code);
+    return this.platformsService.delete(code);
   }
 }

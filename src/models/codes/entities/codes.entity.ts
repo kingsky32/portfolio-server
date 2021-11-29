@@ -10,7 +10,7 @@ export class Code implements ICode {
   label: string;
 
   @Column({ type: 'boolean', default: false, nullable: false })
-  active: boolean;
+  isActive: boolean;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
