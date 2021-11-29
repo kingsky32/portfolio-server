@@ -1,7 +1,6 @@
 import { User } from '#models/users/entities/users.entity';
 import { UsersService } from '#models/users/users.service';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import bcrypt from '#common/utils/bcrypt';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthConfigService } from '#config/authentication/config.service';
 
