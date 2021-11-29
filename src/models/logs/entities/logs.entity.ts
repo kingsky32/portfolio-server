@@ -8,7 +8,7 @@ import {
 import { ILog } from '../interfaces/logs.interface';
 import { User } from '#models/users/entities/users.entity';
 
-@Entity({ name: 'codes' })
+@Entity({ name: 'logs' })
 export class Log implements ILog {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -1,4 +1,11 @@
-import { ApiBody, ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { Work } from './entities/works.entity';
+import { CreateWorkDto } from './dto/works.dto';
+import {
+  ApiQuery,
+  ApiTags,
+  ApiBearerAuth,
+  ApiCreatedResponse,
+} from '@nestjs/swagger';
 import { WorksService } from './works.service';
 import {
   Body,
@@ -8,7 +15,6 @@ import {
   Query,
   SerializeOptions,
 } from '@nestjs/common';
-import { IWork } from './interfaces/works.interface';
 import {
   defaultWorkGroupsForSerializing,
   WorkEntity,
@@ -25,53 +31,13 @@ export class WorksController {
 
   @ApiBearerAuth()
   @Post()
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        user: {
-          type: 'string',
-        },
-        platform: {
-          type: 'string',
-        },
-        title: {
-          type: 'string',
-        },
-        description: {
-          type: 'string',
-        },
-        meta: {
-          type: 'string',
-        },
-        thumbnail: {
-          type: 'string',
-        },
-        github: {
-          type: 'string',
-        },
-        page: {
-          type: 'string',
-        },
-        tools: {
-          type: 'json',
-        },
-        startAt: {
-          type: 'date',
-        },
-        endAt: {
-          type: 'date',
-        },
-        isActive: {
-          type: 'boolean',
-          default: false,
-        },
-      },
-    },
-  })
   @UserTypes('admin')
-  async create(@Body() body: IWork): Promise<WorkEntity> {
-    return this.worksService.create(body);
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    type: Work,
+  })
+  async create(@Body() createWorkDto: CreateWorkDto): Promise<WorkEntity> {
+    return this.worksService.create(createWorkDto);
   }
 
   @ApiBearerAuth()

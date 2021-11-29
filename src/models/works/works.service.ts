@@ -2,8 +2,8 @@ import { WorksRepository } from './works.repository';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { WorkEntity } from './serializers/works.serializer';
-import { IWork } from './interfaces/works.interface';
 import { Work } from './entities/works.entity';
+import { CreateWorkDto } from './dto/works.dto';
 
 @Injectable()
 export class WorksService {
@@ -12,8 +12,8 @@ export class WorksService {
     private readonly worksRepository: WorksRepository,
   ) {}
 
-  async create(body: IWork): Promise<WorkEntity> {
-    return await this.worksRepository.createEntity(body, ['icon']);
+  async create(createWorkDto: CreateWorkDto): Promise<WorkEntity> {
+    return await this.worksRepository.createEntity(createWorkDto, ['icon']);
   }
 
   async getAll(): Promise<Work[]> {

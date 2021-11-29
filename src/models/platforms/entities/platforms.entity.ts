@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, UpdateDateColumn } from 'typeorm';
 import { IPlatform } from '../interfaces/platforms.interface';
 
-@Entity({ name: 'codes' })
+@Entity({ name: 'platforms' })
 export class Platform implements IPlatform {
   @Column({ type: 'text', primary: true })
   platform: string;

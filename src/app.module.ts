@@ -1,3 +1,5 @@
+import { WorksController } from './models/works/works.controller';
+import { WorksModule } from './models/works/works.module';
 import { LogsController } from './models/logs/logs.controller';
 import { LogsModule } from './models/logs/logs.module';
 import { APP_GUARD } from '@nestjs/core';
@@ -36,6 +38,7 @@ import { UserTypesGuard } from './common/guards/user-types.guard';
     UserTypesModule,
     UsersModule,
     LogsModule,
+    WorksModule,
   ],
   controllers: [
     AppController,
@@ -46,6 +49,7 @@ import { UserTypesGuard } from './common/guards/user-types.guard';
     UserTypesController,
     UsersController,
     LogsController,
+    WorksController,
   ],
   providers: [
     AppService,

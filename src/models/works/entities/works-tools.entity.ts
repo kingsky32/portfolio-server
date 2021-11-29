@@ -9,8 +9,8 @@ import { Tool } from '#models/tools/entities/tools.entity';
 import { IWorkTool } from '../interfaces/works-tools.interface';
 import { Work } from './works.entity';
 
-@Entity({ name: 'tools' })
-export class WorkTool implements IWorkTool {
+@Entity({ name: 'works_tools' })
+export class WorksTool implements IWorkTool {
   @ManyToOne(() => Tool, (tool) => tool.tool, { primary: true })
   @JoinColumn({ name: 'tool', referencedColumnName: 'tool' })
   tool: Tool;

@@ -9,7 +9,6 @@ import { Tool } from '#models/tools/entities/tools.entity';
 export const defaultWorkGroupsForSerializing: string[] = [];
 
 export class WorkEntity extends ModelEntity implements IWork {
-  id: string;
   user: User;
   platform: Platform;
   title: string;
