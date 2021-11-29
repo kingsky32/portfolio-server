@@ -28,23 +28,23 @@ export class Work implements IWork {
   @JoinColumn({ name: 'platform', referencedColumnName: 'platform' })
   platform: Platform;
 
-  @Column({ type: 'string' })
+  @Column({ type: 'text' })
   title: string;
 
-  @Column({ type: 'string' })
+  @Column({ type: 'text' })
   description: string;
 
-  @Column({ type: 'string' })
+  @Column({ type: 'text' })
   meta: string;
 
   @ManyToOne(() => File, (file) => file.id)
   @JoinColumn({ name: 'thumbnail', referencedColumnName: 'id' })
   thumbnail: File;
 
-  @Column({ type: 'string' })
+  @Column({ type: 'text' })
   github: string;
 
-  @Column({ type: 'string' })
+  @Column({ type: 'text' })
   page: string;
 
   @OneToMany(() => WorkTool, (workTool) => workTool.work)
