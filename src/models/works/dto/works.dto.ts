@@ -1,13 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '#models/users/entities/users.entity';
 import { Platform } from '#models/platforms/entities/platforms.entity';
 import { File } from '#models/files/entities/files.entity';
 import { Tool } from '#models/tools/entities/tools.entity';
 
 export class CreateWorkDto {
-  @ApiProperty({ type: () => User })
-  user: User;
-
   @ApiProperty({ type: () => Platform })
   platform: Platform;
 

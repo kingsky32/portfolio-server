@@ -6,7 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { User } from '#models/users/entities/users.entity';
+import { UserEntity } from '#models/users/serializers/users.serializer';
 
 @Injectable()
 export class UserTypesGuard implements CanActivate {
@@ -21,8 +21,9 @@ export class UserTypesGuard implements CanActivate {
       return true;
     }
     const request = context.switchToHttp().getRequest();
-    const user: Omit<User, 'password' | 'accountAccessFailCount'> =
-      request.user;
+    const user: UserEntity = request.user;
+
+    console.log(user);
 
     if (!user || !user.userType) {
       throw new HttpException('Permission Denied', HttpStatus.FORBIDDEN);

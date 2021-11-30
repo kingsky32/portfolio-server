@@ -21,6 +21,7 @@ import { UserTypesController } from './models/user-types/user-types.controller';
 import { UsersModule } from './models/users/users.module';
 import { UsersController } from './models/users/users.controller';
 import { UserTypesGuard } from './common/guards/user-types.guard';
+import { JwtAuthGuard } from '#common/guards/jwt-auth.guard';
 
 /**
  * Import and provide app related classes.
@@ -53,6 +54,10 @@ import { UserTypesGuard } from './common/guards/user-types.guard';
   ],
   providers: [
     AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
     {
       provide: APP_GUARD,
       useClass: UserTypesGuard,
