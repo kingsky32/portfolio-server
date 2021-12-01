@@ -12,7 +12,7 @@ import { IWork } from '../interfaces/works.interface';
 import { Platform } from '#models/platforms/entities/platforms.entity';
 import { File } from '#models/files/entities/files.entity';
 import { Tool } from '#models/tools/entities/tools.entity';
-import { User } from '#/models/users/entities/users.entity';
+import { User } from '#models/users/entities/users.entity';
 import { WorksTool } from './works-tools.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -62,11 +62,11 @@ export class Work implements IWork {
   @ApiProperty({ type: [Tool] })
   tools: Tool[];
 
-  @Column({ type: 'date' })
+  @Column({ type: 'date', nullable: true })
   @ApiProperty({ type: Date })
   startAt: Date;
 
-  @Column({ type: 'date' })
+  @Column({ type: 'date', nullable: true })
   @ApiProperty({ type: Date })
   endAt: Date;
 

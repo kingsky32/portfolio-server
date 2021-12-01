@@ -1,3 +1,4 @@
+import { JwtAuthGuard } from '#common/guards/jwt-auth.guard';
 import { Work } from './entities/works.entity';
 import { CreateWorkDto } from './dto/works.dto';
 import {
@@ -13,13 +14,14 @@ import {
   Delete,
   Post,
   Query,
+  Req,
   SerializeOptions,
+  UseGuards,
 } from '@nestjs/common';
 import {
   defaultWorkGroupsForSerializing,
   WorkEntity,
 } from './serializers/works.serializer';
-import { UserTypes } from '#common/decorators/metadata/user-types.decorator';
 
 @ApiTags('works')
 @Controller('works')
@@ -30,21 +32,24 @@ export class WorksController {
   constructor(private readonly worksService: WorksService) {}
 
   @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Post()
-  @UserTypes('admin')
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
     type: Work,
   })
-  async create(@Body() createWorkDto: CreateWorkDto): Promise<WorkEntity> {
-    return this.worksService.create(createWorkDto);
+  async create(
+    @Body() createWorkDto: CreateWorkDto,
+    @Req() req,
+  ): Promise<WorkEntity> {
+    return this.worksService.create(createWorkDto, req.user);
   }
 
   @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @ApiQuery({ name: 'id', type: 'string' })
-  @UserTypes('admin')
-  async delete(@Query('id') id: string): Promise<boolean> {
-    return this.worksService.delete(id);
+  async delete(@Query('id') id: string, @Req() req): Promise<boolean> {
+    return this.worksService.delete(id, req.user);
   }
 }
