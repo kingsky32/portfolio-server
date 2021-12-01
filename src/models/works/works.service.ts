@@ -1,10 +1,11 @@
+import { PaginatedDto } from './../../common/dtos/paginated.dto';
 import { UserEntity } from '#models/users/serializers/users.serializer';
 import { WorksRepository } from './works.repository';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { WorkEntity } from './serializers/works.serializer';
-import { Work } from './entities/works.entity';
 import { CreateWorkDto } from './dto/works.dto';
+import { PaginationDto } from '#/common/dtos/paginated.dto';
 
 @Injectable()
 export class WorksService {
@@ -25,13 +26,16 @@ export class WorksService {
     ]);
   }
 
-  async getAll(): Promise<Work[]> {
-    return await this.worksRepository.getAll([
-      'user',
-      'platform',
-      'thumbnail',
-      'tools',
-    ]);
+  async getAll(
+    paginationDto: PaginationDto,
+  ): Promise<PaginatedDto<WorkEntity>> {
+    return await this.worksRepository.getAll({
+      where: { isActive: true },
+      pagination: {
+        pageable: true,
+        ...paginationDto,
+      },
+    });
   }
 
   async delete(id: string, user: UserEntity): Promise<boolean> {

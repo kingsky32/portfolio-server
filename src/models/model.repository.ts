@@ -1,10 +1,60 @@
+import { PaginatedDto, PaginationDto } from '#/common/dtos/paginated.dto';
 import { plainToClass } from 'class-transformer';
-import { Repository, DeepPartial } from 'typeorm';
+import { Repository, DeepPartial, FindManyOptions } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { ModelEntity } from '../common/serializers/model.serializer';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
+export interface PaginationOptions extends PaginationDto {
+  pageable?: boolean;
+}
+
+export interface GetAllOptions<T extends ModelEntity>
+  extends FindManyOptions<T> {
+  pagination?: PaginationOptions;
+}
+
 export class ModelRepository<T, K extends ModelEntity> extends Repository<T> {
+  getAll<O extends GetAllOptions<K>>(
+    options?: O,
+  ): O['pagination']['pageable'] extends true
+    ? Promise<PaginatedDto<K> | null>
+    : Promise<K[] | null>;
+  async getAll(
+    options?: GetAllOptions<K>,
+  ): Promise<K[] | PaginatedDto<K> | null> {
+    const { pagination, ..._options } = options ?? {};
+
+    if (pagination?.pageable === true) {
+      const skip = pagination.offset + (pagination.page - 1) * pagination.limit;
+      const total = Number(
+        await this.findAndCount({
+          where: _options.where,
+        }),
+      );
+      const results = await this.find({
+        take: pagination.limit,
+        skip,
+        ..._options,
+      });
+
+      const paginatedDto: PaginatedDto<K> = {
+        total,
+        limit: pagination.limit,
+        offset: skip,
+        results: this.transformMany(results),
+      };
+
+      return paginatedDto;
+    }
+
+    return await this.find(_options)
+      .then((entities) => {
+        return Promise.resolve(entities ? this.transformMany(entities) : null);
+      })
+      .catch((error) => Promise.reject(error));
+  }
+
   async get(
     id: string,
     relations: string[] = [],
@@ -20,23 +70,6 @@ export class ModelRepository<T, K extends ModelEntity> extends Repository<T> {
         }
 
         return Promise.resolve(entity ? this.transform(entity) : null);
-      })
-      .catch((error) => Promise.reject(error));
-  }
-
-  async getAll(
-    relations: string[] = [],
-    throwsException = false,
-  ): Promise<K[] | null> {
-    return await this.find({
-      relations,
-    })
-      .then((entities) => {
-        if (!entities && throwsException) {
-          return Promise.reject(new NotFoundException('Model not found.'));
-        }
-
-        return Promise.resolve(entities ? this.transformMany(entities) : null);
       })
       .catch((error) => Promise.reject(error));
   }

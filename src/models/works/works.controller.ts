@@ -1,3 +1,4 @@
+import { PaginationDto, PaginatedDto } from './../../common/dtos/paginated.dto';
 import { JwtAuthGuard } from '#common/guards/jwt-auth.guard';
 import { Work } from './entities/works.entity';
 import { CreateWorkDto } from './dto/works.dto';
@@ -12,6 +13,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Post,
   Query,
   Req,
@@ -30,6 +32,13 @@ import {
 })
 export class WorksController {
   constructor(private readonly worksService: WorksService) {}
+
+  @Get()
+  getAll(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<PaginatedDto<WorkEntity>> {
+    return this.worksService.getAll(paginationDto);
+  }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)

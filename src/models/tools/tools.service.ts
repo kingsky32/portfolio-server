@@ -15,7 +15,9 @@ export class ToolsService {
   }
 
   async getAll(): Promise<ToolEntity[]> {
-    return await this.toolsRepository.getAll(['icon']);
+    return await this.toolsRepository.getAll({
+      relations: ['icon'],
+    });
   }
 
   async delete(tool: string): Promise<boolean> {
