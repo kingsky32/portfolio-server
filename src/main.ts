@@ -6,7 +6,9 @@ import { HttpExceptionFilter } from '#common/exceptions/http-exception.filter';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import '#common/utils/env';
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: ['error', 'warn'],
+  });
   const options = new DocumentBuilder()
     .setTitle('Seung Ju Server')
     .setVersion('1.0')
