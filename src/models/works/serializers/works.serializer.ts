@@ -20,9 +20,13 @@ export class WorkEntity extends ModelEntity implements IWork {
   tools: Tool[];
   startAt: Date;
   endAt: Date;
+
+  @Expose({ groups: ['work.is_active'] })
   isActive: boolean;
-  @Expose({ groups: ['tool.timestamps'] })
+
+  @Expose({ groups: ['work.timestamps'] })
   createdAt: Date;
-  @Expose({ groups: ['tool.timestamps'] })
+
+  @Expose({ groups: ['work.timestamps'] })
   updatedAt: Date;
 }

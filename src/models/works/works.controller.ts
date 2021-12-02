@@ -7,6 +7,7 @@ import {
   ApiTags,
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiOkResponse,
 } from '@nestjs/swagger';
 import { WorksService } from './works.service';
 import {
@@ -34,7 +35,10 @@ export class WorksController {
   constructor(private readonly worksService: WorksService) {}
 
   @Get()
-  getAll(
+  @ApiOkResponse({
+    type: PaginatedDto,
+  })
+  async getAll(
     @Query() paginationDto: PaginationDto,
   ): Promise<PaginatedDto<WorkEntity>> {
     return this.worksService.getAll(paginationDto);
