@@ -6,7 +6,12 @@ import { User } from '#models/users/entities/users.entity';
 import { Platform } from '#models/platforms/entities/platforms.entity';
 import { Tool } from '#models/tools/entities/tools.entity';
 
-export const defaultWorkGroupsForSerializing: string[] = [];
+export const defaultWorkGroupsForSerializing: string[] = ['work.timestamps'];
+
+export const allWorkGroupsForSerializing: string[] = [
+  ...defaultWorkGroupsForSerializing,
+  'work.is_active',
+];
 
 export class WorkEntity extends ModelEntity implements IWork {
   user: User;

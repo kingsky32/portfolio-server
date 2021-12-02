@@ -1,3 +1,4 @@
+import { PaginatedDto, PaginationDto } from '#/common/dtos/paginated.dto';
 import { UsersService } from './users.service';
 import {
   Body,
@@ -16,7 +17,7 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger';
 import {
-  extendedUserGroupsForSerializing,
+  defaultUserGroupsForSerializing,
   UserEntity,
 } from './serializers/users.serializer';
 import { CreateUserDto } from './dtos/users.dto';
@@ -24,7 +25,7 @@ import { CreateUserDto } from './dtos/users.dto';
 @ApiTags('users')
 @Controller('users')
 @SerializeOptions({
-  groups: extendedUserGroupsForSerializing,
+  groups: defaultUserGroupsForSerializing,
 })
 export class UsersController {
   constructor(private usersService: UsersService) {}
@@ -36,6 +37,17 @@ export class UsersController {
   })
   async create(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
     return this.usersService.create(createUserDto);
+  }
+
+  @Get()
+  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiOkResponse({
+    type: PaginatedDto,
+  })
+  async getAll(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<PaginatedDto<UserEntity>> {
+    return this.usersService.getAll(paginationDto, ['profile', 'userType']);
   }
 
   @Get('/:id')

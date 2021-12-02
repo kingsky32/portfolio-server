@@ -1,27 +1,15 @@
+import { PaginationDto, PaginatedDto } from '#/common/dtos/paginated.dto';
 import { UserEntity } from './serializers/users.serializer';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersRepository } from './users.repository';
 import { User } from './entities/users.entity';
 import bcrypt from '#common/utils/bcrypt';
-import { FindOneOptions } from 'typeorm';
-import { CreateUserDto, UpdateUserDto } from './dtos/users.dto';
-
-export type UserFindOneRequestBody =
-  | Pick<User, 'id'>
-  | (Partial<Pick<User, 'id' | 'email' | 'username'>> & FindOneOptions<User>);
-
-export type UserUpdateRequestBody = Omit<
-  User,
-  | 'id'
-  | 'email'
-  | 'username'
-  | 'password'
-  | 'accountAccessFailCount'
-  | 'userType'
-  | 'createdAt'
-  | 'updatedAt'
->;
+import {
+  CreateUserDto,
+  UpdateUserDto,
+  UserFindOneRequestBody,
+} from './dtos/users.dto';
 
 @Injectable()
 export class UsersService {
@@ -61,6 +49,20 @@ export class UsersService {
       'profile',
       'userType',
     ]);
+  }
+
+  async getAll(
+    paginationDto: PaginationDto,
+    relations: string[] = [],
+  ): Promise<PaginatedDto<UserEntity>> {
+    return await this.usersRepository.getAll({
+      where: { isActive: true },
+      pagination: {
+        pageable: true,
+        ...paginationDto,
+      },
+      relations,
+    });
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User | null> {

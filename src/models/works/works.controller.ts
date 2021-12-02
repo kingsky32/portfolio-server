@@ -12,6 +12,7 @@ import {
 import { WorksService } from './works.service';
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -20,6 +21,7 @@ import {
   Req,
   SerializeOptions,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   defaultWorkGroupsForSerializing,
@@ -34,16 +36,6 @@ import {
 export class WorksController {
   constructor(private readonly worksService: WorksService) {}
 
-  @Get()
-  @ApiOkResponse({
-    type: PaginatedDto,
-  })
-  async getAll(
-    @Query() paginationDto: PaginationDto,
-  ): Promise<PaginatedDto<WorkEntity>> {
-    return this.worksService.getAll(paginationDto);
-  }
-
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -56,6 +48,22 @@ export class WorksController {
     @Req() req,
   ): Promise<WorkEntity> {
     return this.worksService.create(createWorkDto, req.user);
+  }
+
+  @Get()
+  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiOkResponse({
+    type: PaginatedDto,
+  })
+  async getAll(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<PaginatedDto<WorkEntity>> {
+    return this.worksService.getAll(paginationDto, [
+      'user',
+      'platform',
+      'thumbnail',
+      'tools',
+    ]);
   }
 
   @ApiBearerAuth()

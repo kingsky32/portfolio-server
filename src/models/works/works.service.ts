@@ -28,6 +28,7 @@ export class WorksService {
 
   async getAll(
     paginationDto: PaginationDto,
+    relations: string[] = [],
   ): Promise<PaginatedDto<WorkEntity>> {
     return await this.worksRepository.getAll({
       where: { isActive: true },
@@ -35,6 +36,7 @@ export class WorksService {
         pageable: true,
         ...paginationDto,
       },
+      relations,
     });
   }
 

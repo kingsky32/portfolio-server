@@ -3,7 +3,7 @@ import { EntityRepository, DeepPartial } from 'typeorm';
 import { Work } from './entities/works.entity';
 import { ModelRepository } from '../model.repository';
 import {
-  defaultWorkGroupsForSerializing,
+  allWorkGroupsForSerializing,
   WorkEntity,
 } from './serializers/works.serializer';
 import { classToPlain, plainToClass } from 'class-transformer';
@@ -51,7 +51,7 @@ export class WorksRepository extends ModelRepository<Work, WorkEntity> {
 
   transform(model: Work): WorkEntity {
     const tranformOptions = {
-      groups: defaultWorkGroupsForSerializing,
+      groups: allWorkGroupsForSerializing,
     };
     return plainToClass(
       WorkEntity,
