@@ -66,6 +66,21 @@ export class WorksController {
     ]);
   }
 
+  @Get(':id')
+  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiOkResponse({
+    type: WorkEntity,
+  })
+  @ApiQuery({ name: 'id', type: 'string' })
+  async get(@Query('id') id: string): Promise<WorkEntity> {
+    return this.worksService.get(id, [
+      'user',
+      'platform',
+      'thumbnail',
+      'tools',
+    ]);
+  }
+
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete(':id')

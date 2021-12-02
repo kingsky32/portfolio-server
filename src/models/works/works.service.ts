@@ -40,6 +40,10 @@ export class WorksService {
     });
   }
 
+  async get(id: string, relations: string[] = []): Promise<WorkEntity> {
+    return await this.worksRepository.get(id, relations, true);
+  }
+
   async delete(id: string, user: UserEntity): Promise<boolean> {
     const work = await this.worksRepository.get(id, ['user'], true);
     if (work.user.id !== user.id) {
