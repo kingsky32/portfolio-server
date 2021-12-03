@@ -22,7 +22,7 @@ export class Work implements IWork {
   @ApiProperty({ type: String })
   id: string;
 
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.id, { nullable: false })
   @JoinColumn({ name: 'user', referencedColumnName: 'id' })
   @ApiProperty({ type: () => User })
   user: User;
@@ -70,7 +70,12 @@ export class Work implements IWork {
   @ApiProperty({ type: Date })
   endAt: Date;
 
-  @Column({ type: 'boolean', default: false, nullable: false })
+  @Column({
+    name: 'is_active',
+    type: 'boolean',
+    default: false,
+    nullable: false,
+  })
   @ApiProperty({ type: Boolean })
   isActive: boolean;
 

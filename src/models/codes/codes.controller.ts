@@ -33,7 +33,7 @@ export class CodesController {
 
   @ApiBearerAuth()
   @Post()
-  @UserTypes('admin')
+  @UserTypes('ADMIN')
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
     type: CodeEntity,
@@ -52,7 +52,7 @@ export class CodesController {
   @ApiBearerAuth()
   @Delete(':code')
   @ApiQuery({ name: 'code', type: 'string' })
-  @UserTypes('admin')
+  @UserTypes('ADMIN')
   @ApiOkResponse({ type: Boolean })
   async delete(@Query('code') code: string): Promise<boolean> {
     return this.codesService.delete(code);

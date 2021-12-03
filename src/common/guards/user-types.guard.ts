@@ -23,12 +23,14 @@ export class UserTypesGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const user: UserEntity = request.user;
 
-    console.log(user);
-
-    if (!user || !user.userType) {
+    if (
+      !user ||
+      !user.userType ||
+      !userTypes.includes(user.userType.userType)
+    ) {
       throw new HttpException('Permission Denied', HttpStatus.FORBIDDEN);
     }
 
-    return userTypes.includes(user.userType.userType);
+    return true;
   }
 }

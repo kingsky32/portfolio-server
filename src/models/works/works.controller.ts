@@ -1,5 +1,4 @@
 import { PaginationDto, PaginatedDto } from './../../common/dtos/paginated.dto';
-import { JwtAuthGuard } from '#common/guards/jwt-auth.guard';
 import { Work } from './entities/works.entity';
 import { CreateWorkDto } from './dto/works.dto';
 import {
@@ -20,7 +19,6 @@ import {
   Query,
   Req,
   SerializeOptions,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import {
@@ -37,7 +35,6 @@ export class WorksController {
   constructor(private readonly worksService: WorksService) {}
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
   @Post()
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
@@ -82,7 +79,6 @@ export class WorksController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @ApiQuery({ name: 'id', type: 'string' })
   async delete(@Query('id') id: string, @Req() req): Promise<boolean> {

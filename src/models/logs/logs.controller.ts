@@ -23,7 +23,7 @@ export class LogsController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Get()
-  @UserTypes('admin')
+  @UserTypes('ADMIN')
   @ApiOkResponse({ type: [LogEntity] })
   async getAll(): Promise<LogEntity[]> {
     return this.toolsService.getAll();

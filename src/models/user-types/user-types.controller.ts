@@ -33,7 +33,7 @@ export class UserTypesController {
 
   @ApiBearerAuth()
   @Post()
-  @UserTypes('admin')
+  @UserTypes('ADMIN')
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
     type: UserTypeEntity,
@@ -54,7 +54,7 @@ export class UserTypesController {
   @ApiBearerAuth()
   @Delete(':type')
   @ApiQuery({ name: 'type', type: 'string' })
-  @UserTypes('admin')
+  @UserTypes('ADMIN')
   @ApiOkResponse({ type: Boolean })
   async delete(@Query('type') userType: string): Promise<boolean> {
     return this.userTypesService.delete(userType);

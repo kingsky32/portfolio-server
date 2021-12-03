@@ -33,7 +33,7 @@ export class ToolsController {
 
   @ApiBearerAuth()
   @Post()
-  @UserTypes('admin')
+  @UserTypes('ADMIN')
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
     type: ToolEntity,
@@ -52,7 +52,7 @@ export class ToolsController {
   @ApiBearerAuth()
   @Delete(':tool')
   @ApiQuery({ name: 'tool', type: 'string' })
-  @UserTypes('admin')
+  @UserTypes('ADMIN')
   @ApiOkResponse({ type: Boolean })
   async delete(@Query('tool') tool: string): Promise<boolean> {
     return this.toolsService.delete(tool);

@@ -15,6 +15,9 @@ export class UserTypeEntity extends ModelEntity implements IUserType {
   @ApiProperty({ type: Boolean })
   isActive: boolean;
 
+  @ApiProperty({ type: Number })
+  level: number;
+
   @Expose({ groups: ['user_type.timestamps'] })
   createdAt: Date;
 

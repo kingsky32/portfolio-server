@@ -1,12 +1,9 @@
+import { UserEntity } from './../models/users/serializers/users.serializer';
 import { User } from '#models/users/entities/users.entity';
 import { UsersService } from '#models/users/users.service';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthConfigService } from '#config/authentication/config.service';
-
-export type ValidateUserType =
-  | Omit<User, 'password' | 'accountAccessFailCount'>
-  | Error;
 
 @Injectable()
 export class AuthService {
@@ -16,10 +13,11 @@ export class AuthService {
     private authConfigService: AuthConfigService,
   ) {}
 
-  async validateUser(
-    username: string,
-    password: string,
-  ): Promise<ValidateUserType> {
+  async get(id: string): Promise<UserEntity> {
+    return await this.usersService.get(id);
+  }
+
+  async validateUser(username: string, password: string): Promise<UserEntity> {
     return await this.usersService.login(username, password);
   }
 

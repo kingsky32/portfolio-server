@@ -1,21 +1,16 @@
 import { Column, CreateDateColumn, Entity, UpdateDateColumn } from 'typeorm';
-import { IPlatform } from '../interfaces/platforms.interface';
+import { IConfig } from '../interfaces/configs.interface';
 
-@Entity({ name: 'platforms' })
-export class Platform implements IPlatform {
+@Entity({ name: 'configs' })
+export class Config implements IConfig {
   @Column({ type: 'text', primary: true })
-  platform: string;
+  config: string;
 
   @Column({ type: 'text' })
-  label: string;
+  value: string;
 
-  @Column({
-    name: 'is_active',
-    type: 'boolean',
-    default: false,
-    nullable: false,
-  })
-  isActive: boolean;
+  @Column({ name: 'is_system', type: 'boolean' })
+  isSystem: boolean;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

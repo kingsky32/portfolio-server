@@ -15,9 +15,6 @@ export class CreateUserDto {
 
   @ApiProperty({ type: () => File })
   profile: File;
-
-  @ApiProperty({ type: Boolean, default: false })
-  isActive: boolean;
 }
 
 export class UpdateUserDto {

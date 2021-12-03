@@ -9,11 +9,11 @@ export const defaultUserGroupsForSerializing: string[] = ['user.timestamps'];
 
 export const extendedUserGroupsForSerializing: string[] = [
   ...defaultUserGroupsForSerializing,
+  'user.account_access_fail_count',
 ];
 export const allUserGroupsForSerializing: string[] = [
   ...extendedUserGroupsForSerializing,
   'user.password',
-  'user.account_access_fail_count',
 ];
 
 export class UserEntity extends ModelEntity implements IUser {

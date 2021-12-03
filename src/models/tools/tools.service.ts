@@ -14,9 +14,9 @@ export class ToolsService {
     return await this.toolsRepository.createEntity(toolEntity, ['icon']);
   }
 
-  async getAll(): Promise<ToolEntity[]> {
+  async getAll(relations: string[] = ['icon']): Promise<ToolEntity[]> {
     return await this.toolsRepository.getAll({
-      relations: ['icon'],
+      relations,
     });
   }
 

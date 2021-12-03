@@ -31,6 +31,7 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Post('/')
+  @UseInterceptors(ClassSerializerInterceptor)
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
     type: UserEntity,
@@ -47,7 +48,7 @@ export class UsersController {
   async getAll(
     @Query() paginationDto: PaginationDto,
   ): Promise<PaginatedDto<UserEntity>> {
-    return this.usersService.getAll(paginationDto, ['profile', 'userType']);
+    return this.usersService.getAll(paginationDto);
   }
 
   @Get('/:id')
@@ -55,6 +56,6 @@ export class UsersController {
   @ApiQuery({ name: 'id', type: 'string' })
   @ApiOkResponse({ type: UserEntity })
   async get(@Query('id') id: string): Promise<UserEntity> {
-    return this.usersService.get(id, ['profile', 'userType'], true);
+    return this.usersService.get(id);
   }
 }

@@ -46,7 +46,7 @@ export class CodesController {
       },
     },
   })
-  @UserTypes('admin')
+  @UserTypes('ADMIN')
   async create(@Body() body: IPlatform): Promise<PlatformEntity> {
     return this.platformsService.create(body);
   }
@@ -60,7 +60,7 @@ export class CodesController {
   @ApiBearerAuth()
   @Delete(':code')
   @ApiQuery({ name: 'code', type: 'string' })
-  @UserTypes('admin')
+  @UserTypes('ADMIN')
   async delete(@Query('code') code: string): Promise<boolean> {
     return this.platformsService.delete(code);
   }
