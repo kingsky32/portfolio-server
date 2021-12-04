@@ -1,3 +1,4 @@
+import { GetAllOptions } from './../model.repository';
 import { UserTypesRepository } from './user-types.repository';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,8 +15,22 @@ export class UserTypesService {
     return await this.userTypesRepository.createEntity(userTypeEntity);
   }
 
-  async getAll(): Promise<UserTypeEntity[]> {
-    return await this.userTypesRepository.getAll();
+  async get(
+    userType: string,
+    relations: string[] = [],
+    throwsException = true,
+  ): Promise<UserTypeEntity> {
+    return await this.userTypesRepository.get(
+      userType,
+      relations,
+      throwsException,
+    );
+  }
+
+  async getAll(
+    options?: GetAllOptions<UserTypeEntity>,
+  ): Promise<UserTypeEntity[]> {
+    return await this.userTypesRepository.getAll(options);
   }
 
   async delete(userType: string): Promise<boolean> {

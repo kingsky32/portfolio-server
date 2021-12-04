@@ -9,12 +9,12 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   canActivate(context: ExecutionContext) {
-    const userTypes = this.reflector.get<string[]>(
-      'user-types',
+    const userType = this.reflector.get<string>(
+      'user-type',
       context.getHandler(),
     );
 
-    if (!userTypes) {
+    if (!userType) {
       return true;
     }
 

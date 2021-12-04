@@ -1,4 +1,3 @@
 import { SetMetadata } from '@nestjs/common';
 
-export const UserTypes = (...userTypes: string[]) =>
-  SetMetadata('user-types', userTypes);
+export const UserTypes = (userType) => SetMetadata('user-type', userType);

@@ -25,6 +25,7 @@ import {
   defaultWorkGroupsForSerializing,
   WorkEntity,
 } from './serializers/works.serializer';
+import { UserTypes } from '#/common/decorators/metadata/user-types.decorator';
 
 @ApiTags('works')
 @Controller('works')
@@ -36,6 +37,7 @@ export class WorksController {
 
   @ApiBearerAuth()
   @Post()
+  @UserTypes('USER')
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
     type: Work,

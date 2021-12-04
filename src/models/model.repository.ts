@@ -1,4 +1,4 @@
-import { PaginatedDto, PaginationDto } from '#/common/dtos/paginated.dto';
+import { PaginatedDto, PaginationDto } from '#common/dtos/paginated.dto';
 import { plainToClass } from 'class-transformer';
 import { Repository, DeepPartial, FindManyOptions } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
