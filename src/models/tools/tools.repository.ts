@@ -8,6 +8,7 @@ import {
 } from './serializers/tools.serializer';
 import { classToPlain, plainToClass } from 'class-transformer';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import { ClassTransformOptions } from '@nestjs/common/interfaces/external/class-transform-options.interface';
 
 @EntityRepository(Tool)
 export class ToolsRepository extends ModelRepository<Tool, ToolEntity> {
@@ -50,7 +51,7 @@ export class ToolsRepository extends ModelRepository<Tool, ToolEntity> {
   }
 
   transform(model: Tool): ToolEntity {
-    const tranformOptions = {
+    const tranformOptions: ClassTransformOptions = {
       groups: defaultToolGroupsForSerializing,
     };
     return plainToClass(

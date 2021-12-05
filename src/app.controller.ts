@@ -16,6 +16,7 @@ import {
   extendedUserGroupsForSerializing,
   UserEntity,
 } from './models/users/serializers/users.serializer';
+import { UserTypes } from './common/decorators/metadata/user-types.decorator';
 
 @Controller()
 @SerializeOptions({
@@ -34,6 +35,7 @@ export class AppController {
 
   @ApiBearerAuth()
   @Get('profile')
+  @UserTypes('USER')
   @UseInterceptors(ClassSerializerInterceptor)
   @ApiOkResponse({ type: UserEntity })
   getProfile(@Req() req): Promise<UserEntity | null> {
@@ -42,6 +44,7 @@ export class AppController {
 
   @ApiBearerAuth()
   @Put('profile')
+  @UserTypes('USER')
   @UseInterceptors(ClassSerializerInterceptor)
   @ApiOkResponse({ type: UserEntity })
   async update(

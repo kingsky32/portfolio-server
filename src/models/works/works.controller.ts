@@ -38,6 +38,7 @@ export class WorksController {
   @ApiBearerAuth()
   @Post()
   @UserTypes('USER')
+  @UseInterceptors(ClassSerializerInterceptor)
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
     type: Work,

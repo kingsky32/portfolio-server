@@ -6,7 +6,11 @@ import {
   defaultUserTyperoupsForSerializing,
   UserTypeEntity,
 } from './serializers/user-types.serializer';
-import { classToPlain, plainToClass } from 'class-transformer';
+import {
+  classToPlain,
+  ClassTransformOptions,
+  plainToClass,
+} from 'class-transformer';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 @EntityRepository(UserType)
@@ -55,9 +59,8 @@ export class UserTypesRepository extends ModelRepository<
   }
 
   transform(model: UserType): UserTypeEntity {
-    const tranformOptions = {
+    const tranformOptions: ClassTransformOptions = {
       groups: defaultUserTyperoupsForSerializing,
-      UserTypeEntity,
     };
     return plainToClass(
       UserTypeEntity,

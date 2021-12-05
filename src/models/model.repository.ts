@@ -1,5 +1,5 @@
 import { PaginatedDto, PaginationDto } from '#common/dtos/paginated.dto';
-import { plainToClass } from 'class-transformer';
+import { ClassTransformOptions, plainToClass } from 'class-transformer';
 import { Repository, DeepPartial, FindManyOptions } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { ModelEntity } from '../common/serializers/model.serializer';
@@ -97,11 +97,14 @@ export class ModelRepository<T, K extends ModelEntity> extends Repository<T> {
       .catch((error) => Promise.reject(error));
   }
 
-  transform(model: T, transformOptions = {}): K {
+  transform(model: T, transformOptions: ClassTransformOptions = {}): K {
     return plainToClass(ModelEntity, model, transformOptions) as K;
   }
 
-  transformMany(models: T[], transformOptions = {}): K[] {
+  transformMany(
+    models: T[],
+    transformOptions: ClassTransformOptions = {},
+  ): K[] {
     return models.map((model) => this.transform(model, transformOptions));
   }
 }

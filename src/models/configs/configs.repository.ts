@@ -8,6 +8,7 @@ import {
 } from './serializers/configs.serializer';
 import { classToPlain, plainToClass } from 'class-transformer';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import { ClassTransformOptions } from '@nestjs/common/interfaces/external/class-transform-options.interface';
 
 @EntityRepository(Config)
 export class ConfigsRepository extends ModelRepository<Config, ConfigEntity> {
@@ -50,9 +51,8 @@ export class ConfigsRepository extends ModelRepository<Config, ConfigEntity> {
   }
 
   transform(model: Config): ConfigEntity {
-    const tranformOptions = {
+    const tranformOptions: ClassTransformOptions = {
       groups: defaultConfigGroupsForSerializing,
-      ConfigEntity,
     };
     return plainToClass(
       ConfigEntity,

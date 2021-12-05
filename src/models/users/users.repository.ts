@@ -5,12 +5,16 @@ import {
   defaultUserGroupsForSerializing,
   UserEntity,
 } from './serializers/users.serializer';
-import { classToPlain, plainToClass } from 'class-transformer';
+import {
+  classToPlain,
+  plainToClass,
+  ClassTransformOptions,
+} from 'class-transformer';
 
 @EntityRepository(User)
 export class UsersRepository extends ModelRepository<User, UserEntity> {
   transform(model: User): UserEntity {
-    const tranformOptions = {
+    const tranformOptions: ClassTransformOptions = {
       groups: defaultUserGroupsForSerializing,
     };
     return plainToClass(

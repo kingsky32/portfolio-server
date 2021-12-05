@@ -8,6 +8,7 @@ import {
 } from './serializers/platforms.serializer';
 import { classToPlain, plainToClass } from 'class-transformer';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import { ClassTransformOptions } from '@nestjs/common/interfaces/external/class-transform-options.interface';
 
 @EntityRepository(Platform)
 export class PlatformsRepository extends ModelRepository<
@@ -55,7 +56,7 @@ export class PlatformsRepository extends ModelRepository<
   }
 
   transform(model: Platform): PlatformEntity {
-    const tranformOptions = {
+    const tranformOptions: ClassTransformOptions = {
       groups: defaultPlatformGroupsForSerializing,
     };
     return plainToClass(
