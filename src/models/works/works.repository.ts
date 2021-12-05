@@ -6,9 +6,12 @@ import {
   allWorkGroupsForSerializing,
   WorkEntity,
 } from './serializers/works.serializer';
-import { classToPlain, plainToClass } from 'class-transformer';
+import {
+  classToPlain,
+  ClassTransformOptions,
+  plainToClass,
+} from 'class-transformer';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
-import { ClassTransformOptions } from '@nestjs/common/interfaces/external/class-transform-options.interface';
 
 @EntityRepository(Work)
 export class WorksRepository extends ModelRepository<Work, WorkEntity> {
