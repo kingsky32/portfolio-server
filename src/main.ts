@@ -19,6 +19,7 @@ async function bootstrap() {
   // Get app config for cors settings and starting the app.
   const appConfig = app.get<AppConfigService>(AppConfigService);
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.enableCors();
   await app.listen(appConfig.port);
 }
 bootstrap();
