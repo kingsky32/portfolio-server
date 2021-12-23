@@ -33,6 +33,12 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @Get('time')
+  @ApiOkResponse({ type: Date })
+  async getTime(): Promise<Date> {
+    return this.appService.getTime();
+  }
+
   @ApiBearerAuth()
   @Get('profile')
   @UserTypes('USER')
