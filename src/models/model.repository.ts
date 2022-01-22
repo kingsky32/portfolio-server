@@ -1,8 +1,8 @@
 import { PaginatedDto, PaginationDto } from '#common/dtos/paginated.dto';
 import { ClassTransformOptions, plainToClass } from 'class-transformer';
-import { Repository, DeepPartial, FindManyOptions } from 'typeorm';
+import { DeepPartial, FindManyOptions, Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
-import { ModelEntity } from '../common/serializers/model.serializer';
+import { ModelEntity } from '#common/serializers/model.serializer';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 export interface PaginationOptions extends PaginationDto {
@@ -23,11 +23,11 @@ export class ModelRepository<T, K extends ModelEntity> extends Repository<T> {
   async getAll(
     options?: GetAllOptions<K>,
   ): Promise<K[] | PaginatedDto<K> | null> {
-    const { pagination, ..._options } = options ?? {};
+    const { pagination, ...optionsWithoutPagination } = options ?? {};
 
     if (pagination?.pageable === true) {
       const totalResults = await this.count({
-        where: _options.where,
+        where: optionsWithoutPagination.where,
       });
       const skip = Number(
         pagination.offset + (pagination.page - 1) * pagination.limit,
@@ -35,10 +35,10 @@ export class ModelRepository<T, K extends ModelEntity> extends Repository<T> {
       const results = await this.find({
         take: pagination.limit,
         skip,
-        ..._options,
+        ...optionsWithoutPagination,
       });
 
-      const paginatedDto: PaginatedDto<K> = {
+      return {
         pageInfo: {
           totalResults: Number(totalResults),
           resultsPerPage: results.length,
@@ -48,11 +48,9 @@ export class ModelRepository<T, K extends ModelEntity> extends Repository<T> {
         },
         results: this.transformMany(results),
       };
-
-      return paginatedDto;
     }
 
-    return await this.find(_options)
+    return await this.find(optionsWithoutPagination)
       .then((entities) => {
         return Promise.resolve(entities ? this.transformMany(entities) : null);
       })

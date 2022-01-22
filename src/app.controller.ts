@@ -1,4 +1,4 @@
-import { UpdateUserDto } from './models/users/dtos/users.dto';
+import { UpdateUserDto } from '#models/users/dtos/users.dto';
 import { UsersService } from '#models/users/users.service';
 import {
   Body,
@@ -15,8 +15,8 @@ import { AppService } from './app.service';
 import {
   extendedUserGroupsForSerializing,
   UserEntity,
-} from './models/users/serializers/users.serializer';
-import { UserTypes } from './common/decorators/metadata/user-types.decorator';
+} from '#models/users/serializers/users.serializer';
+import { UserTypes } from '#common/decorators/metadata/user-types.decorator';
 
 @Controller()
 @SerializeOptions({

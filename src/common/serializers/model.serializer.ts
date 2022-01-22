@@ -1,4 +1,5 @@
-export class ModelEntity {
+import { ObjectLiteral } from 'typeorm';
+
+export class ModelEntity implements ObjectLiteral {
   id: string;
-  [key: string]: any;
 }
