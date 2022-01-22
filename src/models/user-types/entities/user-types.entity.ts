@@ -9,8 +9,16 @@ export class UserType implements IUserType {
   @Column({ type: 'text' })
   label: string;
 
-  @Column({ type: 'boolean', default: false, nullable: false })
-  active: boolean;
+  @Column({ type: 'int', default: 0 })
+  level: number;
+
+  @Column({
+    name: 'is_active',
+    type: 'boolean',
+    default: false,
+    nullable: false,
+  })
+  isActive: boolean;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

@@ -6,7 +6,11 @@ import {
   defaultCodeGroupsForSerializing,
   CodeEntity,
 } from './serializers/codes.serializer';
-import { classToPlain, plainToClass } from 'class-transformer';
+import {
+  classToPlain,
+  ClassTransformOptions,
+  plainToClass,
+} from 'class-transformer';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 @EntityRepository(Code)
@@ -50,7 +54,7 @@ export class CodesRepository extends ModelRepository<Code, CodeEntity> {
   }
 
   transform(model: Code): CodeEntity {
-    const tranformOptions = {
+    const tranformOptions: ClassTransformOptions = {
       groups: defaultCodeGroupsForSerializing,
     };
     return plainToClass(

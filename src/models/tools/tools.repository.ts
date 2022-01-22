@@ -8,16 +8,17 @@ import {
 } from './serializers/tools.serializer';
 import { classToPlain, plainToClass } from 'class-transformer';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import { ClassTransformOptions } from '@nestjs/common/interfaces/external/class-transform-options.interface';
 
 @EntityRepository(Tool)
 export class ToolsRepository extends ModelRepository<Tool, ToolEntity> {
   async get(
-    code: string,
+    tool: string,
     relations: string[] = [],
     throwsException = false,
   ): Promise<ToolEntity | null> {
     return await this.findOne({
-      where: { code },
+      where: { tool },
       relations,
     })
       .then((entity) => {
@@ -35,7 +36,7 @@ export class ToolsRepository extends ModelRepository<Tool, ToolEntity> {
     relations: string[] = [],
   ): Promise<ToolEntity> {
     return this.save(inputs)
-      .then(async (entity) => await this.get((entity as any).code, relations))
+      .then(async (entity) => await this.get((entity as any).tool, relations))
       .catch((error) => Promise.reject(error));
   }
 
@@ -44,13 +45,13 @@ export class ToolsRepository extends ModelRepository<Tool, ToolEntity> {
     inputs: QueryDeepPartialEntity<Tool>,
     relations: string[] = [],
   ): Promise<ToolEntity> {
-    return this.update(entity.code, inputs)
-      .then(async () => await this.get(entity.code, relations))
+    return this.update(entity.tool, inputs)
+      .then(async () => await this.get(entity.tool, relations))
       .catch((error) => Promise.reject(error));
   }
 
   transform(model: Tool): ToolEntity {
-    const tranformOptions = {
+    const tranformOptions: ClassTransformOptions = {
       groups: defaultToolGroupsForSerializing,
     };
     return plainToClass(

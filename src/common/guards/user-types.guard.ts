@@ -1,3 +1,4 @@
+import { UserTypesService } from './../../models/user-types/user-types.service';
 import {
   Injectable,
   CanActivate,
@@ -6,28 +7,34 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { User } from '#models/users/entities/users.entity';
+import { UserEntity } from '#models/users/serializers/users.serializer';
 
 @Injectable()
 export class UserTypesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(
+    private readonly userTypesService: UserTypesService,
+    private readonly reflector: Reflector,
+  ) {}
 
-  canActivate(context: ExecutionContext): boolean {
-    const userTypes = this.reflector.get<string[]>(
-      'user-types',
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const userType = this.reflector.get<string>(
+      'user-type',
       context.getHandler(),
     );
-    if (!userTypes) {
+    if (!userType) {
       return true;
     }
     const request = context.switchToHttp().getRequest();
-    const user: Omit<User, 'password' | 'accountAccessFailCount'> =
-      request.user;
+    const user: UserEntity = request.user;
 
-    if (!user || !user.userType) {
+    const userTypeRaw = await this.userTypesService.get(userType);
+
+    console.log(user);
+
+    if (!user || !user.userType || userTypeRaw.level > user.userType.level) {
       throw new HttpException('Permission Denied', HttpStatus.FORBIDDEN);
     }
 
-    return userTypes.includes(user.userType.userType);
+    return true;
   }
 }

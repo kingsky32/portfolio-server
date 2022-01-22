@@ -1,5 +1,6 @@
 export interface IUserType {
   userType: string;
   label: string;
-  active: boolean;
+  level: number;
+  isActive: boolean;
 }

@@ -1,4 +1,10 @@
-import { ApiBody, ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiQuery,
+  ApiTags,
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+} from '@nestjs/swagger';
 import { ToolsService } from './tools.service';
 import {
   Body,
@@ -11,12 +17,10 @@ import {
   SerializeOptions,
   UseInterceptors,
 } from '@nestjs/common';
-import { ITool } from './interfaces/tools.interface';
 import {
   defaultToolGroupsForSerializing,
   ToolEntity,
 } from './serializers/tools.serializer';
-import { Tool } from './entities/tools.entity';
 import { UserTypes } from '#common/decorators/metadata/user-types.decorator';
 
 @ApiTags('tools')
@@ -29,42 +33,28 @@ export class ToolsController {
 
   @ApiBearerAuth()
   @Post()
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        code: {
-          type: 'string',
-        },
-        label: {
-          type: 'string',
-        },
-        icon: {
-          type: 'string',
-        },
-        active: {
-          type: 'boolean',
-          default: false,
-        },
-      },
-    },
+  @UserTypes('ADMIN')
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    type: ToolEntity,
   })
-  @UserTypes('admin')
-  async create(@Body() body: ITool): Promise<ToolEntity> {
-    return this.toolsService.create(body);
+  async create(@Body() toolEntity: ToolEntity): Promise<ToolEntity> {
+    return this.toolsService.create(toolEntity);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Get()
-  async getAll(): Promise<Tool[]> {
+  @ApiOkResponse({ type: [ToolEntity] })
+  async getAll(): Promise<ToolEntity[]> {
     return this.toolsService.getAll();
   }
 
   @ApiBearerAuth()
-  @Delete(':code')
-  @ApiQuery({ name: 'code', type: 'string' })
-  @UserTypes('admin')
-  async delete(@Query('code') code: string): Promise<boolean> {
-    return this.toolsService.delete(code);
+  @Delete(':tool')
+  @ApiQuery({ name: 'tool', type: 'string' })
+  @UserTypes('ADMIN')
+  @ApiOkResponse({ type: Boolean })
+  async delete(@Query('tool') tool: string): Promise<boolean> {
+    return this.toolsService.delete(tool);
   }
 }

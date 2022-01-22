@@ -3,7 +3,6 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LogEntity } from './serializers/logs.serializer';
 import { ILog } from './interfaces/logs.interface';
-import { Log } from './entities/logs.entity';
 
 @Injectable()
 export class LogsService {
@@ -16,7 +15,7 @@ export class LogsService {
     return await this.logsRepository.createEntity(body);
   }
 
-  async getAll(): Promise<Log[]> {
+  async getAll(): Promise<LogEntity[]> {
     return await this.logsRepository.getAll();
   }
 

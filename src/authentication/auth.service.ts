@@ -1,13 +1,9 @@
+import { UserEntity } from './../models/users/serializers/users.serializer';
 import { User } from '#models/users/entities/users.entity';
 import { UsersService } from '#models/users/users.service';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import bcrypt from '#common/utils/bcrypt';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthConfigService } from '#config/authentication/config.service';
-
-export type ValidateUserType =
-  | Omit<User, 'password' | 'accountAccessFailCount'>
-  | Error;
 
 @Injectable()
 export class AuthService {
@@ -17,30 +13,12 @@ export class AuthService {
     private authConfigService: AuthConfigService,
   ) {}
 
-  async validateUser(
-    username: string,
-    password: string,
-  ): Promise<ValidateUserType> {
-    try {
-      const user = await this.usersService.findOne({ username });
+  async get(id: string): Promise<UserEntity> {
+    return await this.usersService.get(id);
+  }
 
-      if (!Boolean(user)) {
-        throw new HttpException('Unregistered User', HttpStatus.UNAUTHORIZED);
-      }
-
-      const isCompare = await bcrypt.compare(password, user.password);
-
-      if (isCompare === false) {
-        throw new HttpException('Incorrect Password', HttpStatus.UNAUTHORIZED);
-      }
-
-      return user;
-    } catch (error) {
-      throw new HttpException(
-        'Wrong credentials provided',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+  async validateUser(username: string, password: string): Promise<UserEntity> {
+    return await this.usersService.login(username, password);
   }
 
   async login(user: User) {

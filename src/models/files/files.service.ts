@@ -10,7 +10,7 @@ export class FilesService {
     private readonly filesRepository: FilesRepository,
   ) {}
 
-  async create(file: Express.MulterS3.File): Promise<FileEntity> {
+  async create(file: Express.MulterS3.File): Promise<FileEntity | null> {
     return await this.filesRepository.createEntity({
       uri: file.location,
       filename: file.originalname,

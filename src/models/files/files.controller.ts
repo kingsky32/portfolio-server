@@ -1,4 +1,10 @@
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { FileEntity } from './serializers/file.serializer';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiTags,
+  ApiCreatedResponse,
+} from '@nestjs/swagger';
 import { FilesService } from './files.service';
 import {
   Controller,
@@ -46,7 +52,13 @@ export class FilesController {
       }),
     }),
   )
-  async create(@UploadedFile() file: Express.MulterS3.File) {
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    type: FileEntity,
+  })
+  async create(
+    @UploadedFile() file: Express.MulterS3.File,
+  ): Promise<FileEntity | null> {
     return this.fileService.create(file);
   }
 }

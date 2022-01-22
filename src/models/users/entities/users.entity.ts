@@ -37,7 +37,9 @@ export class User implements IUser {
   @JoinColumn({ name: 'profile', referencedColumnName: 'id' })
   profile: File;
 
-  @ManyToOne(() => UserType, (userType) => userType.userType)
+  @ManyToOne(() => UserType, (userType) => userType.userType, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'user_type', referencedColumnName: 'userType' })
   userType: UserType;
 

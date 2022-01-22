@@ -1,4 +1,4 @@
-import { User } from '#models/users/entities/users.entity';
+import { UpdateUserDto } from '#models/users/dtos/users.dto';
 import { UsersService } from '#models/users/users.service';
 import {
   Body,
@@ -8,13 +8,15 @@ import {
   Put,
   Req,
   SerializeOptions,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
 import { AppService } from './app.service';
-import { JwtAuthGuard } from '#common/guards/jwt-auth.guard';
-import { extendedUserGroupsForSerializing } from './models/users/serializers/users.serializer';
+import {
+  extendedUserGroupsForSerializing,
+  UserEntity,
+} from '#models/users/serializers/users.serializer';
+import { UserTypes } from '#common/decorators/metadata/user-types.decorator';
 
 @Controller()
 @SerializeOptions({
@@ -31,32 +33,30 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  @UseInterceptors(ClassSerializerInterceptor)
-  getProfile(@Req() req): Promise<User | null> {
-    const user = this.usersService.get(
-      req.user.id,
-      ['profile', 'userType'],
-      true,
-    );
-    return user;
+  @Get('time')
+  @ApiOkResponse({ type: Date })
+  async getTime(): Promise<Date> {
+    return this.appService.getTime();
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Put('profile')
+  @Get('profile')
+  @UserTypes('USER')
   @UseInterceptors(ClassSerializerInterceptor)
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        profile: { type: 'string' },
-      },
-    },
-  })
-  async update(@Req() req, @Body() body): Promise<User | null> {
-    return this.usersService.update(req.user.id, body);
+  @ApiOkResponse({ type: UserEntity })
+  getProfile(@Req() req): Promise<UserEntity | null> {
+    return req.user;
+  }
+
+  @ApiBearerAuth()
+  @Put('profile')
+  @UserTypes('USER')
+  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiOkResponse({ type: UserEntity })
+  async update(
+    @Req() req,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<UserEntity | null> {
+    return this.usersService.update(req.user.id, updateUserDto);
   }
 }
